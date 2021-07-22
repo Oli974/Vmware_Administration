@@ -1,11 +1,3 @@
-Import-Module -Name VMware.PowerCLI
-
-# Connexion au vCenter : -Server vcenter.groupeomicrone.com -user "toto" -Password "tata"
-Connect-VIServer -Server x.x.x.x -User "...." -Password "...."
-
-# Liste les vms actives qui sont sur le ou les datastores d'origine
-$vmlist = get-vm -Datastore <# DATASTORE_ORIGINE #> | Where-Object {$_.PowerState -ne 'PoweredOff'} | Select-Object Name -Unique 
-
 ####
 #   Logs 
 #   Path : .\Log.txt
@@ -13,6 +5,14 @@ $vmlist = get-vm -Datastore <# DATASTORE_ORIGINE #> | Where-Object {$_.PowerStat
 $dir = Get-Location
 $Logfile = $dir.Path + "\Log.txt"
 Start-Transcript -Path $Logfile  
+
+Import-Module -Name VMware.PowerCLI
+
+# Connexion au vCenter : -Server vcenter.groupeomicrone.com -user "toto" -Password "tata"
+Connect-VIServer -Server x.x.x.x -User "...." -Password "...."
+
+# Liste les vms actives qui sont sur le ou les datastores d'origine
+$vmlist = get-vm -Datastore <# DATASTORE_ORIGINE #> | Where-Object {$_.PowerState -ne 'PoweredOff'} | Select-Object Name -Unique 
 
 # Traitement des vms qui ont été récupérées 
 foreach ($vm in $vmlist)
